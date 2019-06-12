@@ -18,19 +18,15 @@
 name := "spark-bigquery"
 organization := "com.spotify"
 scalaVersion := "2.11.12"
-crossScalaVersions := Seq("2.11.12")
 
-spName := "spotify/spark-bigquery"
-sparkVersion := "2.4.0"
-sparkComponents := Seq("core", "sql")
-spAppendScalaVersion := true
-spIncludeMaven := true
+val sparkVersion = "2.4.0"
 
 libraryDependencies ++= Seq(
-  "com.databricks" %% "spark-avro" % "4.0.0",
+  "org.apache.spark" %% "spark-core" % sparkVersion % Provided,
+  "org.apache.spark" %% "spark-sql" % sparkVersion % Provided,
+  "com.databricks" %% "spark-avro" % "4.0.0" % Provided,
   "com.google.cloud.bigdataoss" % "bigquery-connector" % "0.10.2-hadoop2"
     exclude ("com.google.guava", "guava-jdk5"),
-  "org.slf4j" % "slf4j-simple" % "1.7.21",
   "joda-time" % "joda-time" % "2.9.3",
   "org.scalatest" %% "scalatest" % "2.2.1" % "test"
 )
@@ -40,24 +36,4 @@ assemblyMergeStrategy in assembly := {
   case x =>
     val oldStrategy = (assemblyMergeStrategy in assembly).value
     oldStrategy(x)
-
-}
-
-// Release settings
-licenses += "Apache-2.0" -> url("http://opensource.org/licenses/Apache-2.0")
-releaseCrossBuild             := true
-releasePublishArtifactsAction := PgpKeys.publishSigned.value
-pomExtra                      := {
-  <url>https://github.com/spotify/spark-bigquery</url>
-  <scm>
-    <url>git@github.com/spotify/spark-bigquery.git</url>
-    <connection>scm:git:git@github.com:spotify/spark-bigquery.git</connection>
-  </scm>
-  <developers>
-    <developer>
-      <id>sinisa_lyh</id>
-      <name>Neville Li</name>
-      <url>https://twitter.com/sinisa_lyh</url>
-    </developer>
-  </developers>
 }
